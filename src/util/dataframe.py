@@ -30,8 +30,7 @@ def convert_labels(datapoint):
 
 
 def create_dataframe(datapoints, freq):
-    df = pd.DataFrame([x for x in map(convert_labels, datapoints)
-                       if x['freq'] == freq])
+    df = pd.DataFrame([convert_labels(dp) for dp in datapoints if dp['freq'] == freq])
     if df.empty:
         return pd.DataFrame()
     check_duplicates(df)

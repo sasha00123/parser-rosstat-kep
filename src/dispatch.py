@@ -219,9 +219,7 @@ def evaluate(csv_text: str, units: dict, yaml_doc: str):
                         pdef.headers_dict, 
                         pdef.required,
                         pdef.reader)
-        for value in yield_values(tables):
-            yield value     
-    
+        return yield_values(tables)
 
 if __name__ == "__main__":  # pragma: no cover
 

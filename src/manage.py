@@ -3,15 +3,13 @@
 from pathlib import Path
 import shutil
 from io import StringIO
-
 import pandas as pd
 
 
 from inputs import UNITS, YAML_DOC, verify
 from dispatch import evaluate
 from util.remote import Downloader, Unpacker
-from util.word import folder_to_csv
-# WONTFIX: maybe this is not as uril, part of dataflow
+from util.word import folder_to_csv # WONTFIX: maybe this is not as uril, part of dataflow
 from util.dataframe import create_dataframe
 from util.date import is_latest, supported_dates
 from util.to_excel import save_excel
@@ -150,13 +148,13 @@ def parse(year,
     loc = Locations(year, month, data_root)
     #parse    
     text = loc.interim_csv.read_text(encoding='utf-8')
-    values = list(evaluate(text, units_dict, yaml_doc))    
+    values = evaluate(text, units_dict, yaml_doc)
     # save three dataframes
     dfs = {}
     for freq in 'aqm':
         df = create_dataframe(values, freq)
         dfs[freq] = df
-        validator(df, freq)
+        # validator(df, freq)
         df.to_csv(str(loc.processed_csv(freq)))
     return dfs
 
@@ -183,14 +181,14 @@ TEST_VALUES = list(evaluate(TEST_DOC, UNITS, YAML_DOC))
 
 def isolation1(): 
     doc = SRC.read_text(encoding='utf-8') 
-    return evaluate(doc, UNITS, YAML_DOC)  
+    return evaluate(doc, UNITS, YAML_DOC)
 
 def isolation2():
     dfs = {}
     for freq in 'aqm':
         df = create_dataframe(TEST_VALUES, freq)
         dfs[freq] = df
-        verify(df, freq)        
+        # verify(df, freq)        
         df.to_csv('temp.txt')
     return dfs    
 
